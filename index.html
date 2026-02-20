@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Furina AI - Glass System</title>
+    <link rel="stylesheet" href="latar_transisi.css">
+    <link rel="stylesheet" href="chatbox.css">
+    <style>
+        /* Tambahan CSS darurat untuk memastikan tombol bisa diklik */
+        .modal-hidden {
+            display: none !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Styling Action Bar Tombol */
+        .chat-actions-bar {
+            display: flex;
+            gap: 6px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            justify-content: space-around;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #1f2937;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Progress Bar AFK */
+        #afk-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #ef4444;
+            width: 0%;
+            transition: width 1s linear;
+            z-index: 100;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+        }
+
+        /* --- STYLING SECRET TRIGGER (PRIVASI) --- */
+        #chat-trigger {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: transparent; /* Tak terlihat */
+            color: transparent;      /* Menghilangkan emoji 💬 */
+            cursor: default;
+            z-index: 9999;
+            user-select: none;
+        }
+
+        /* Memberikan sedikit indikator saat ditekan agar Anda tahu pemicunya bekerja */
+        #chat-trigger:active {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        #chat-trigger.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="chat-trigger"></div>
+
+    <div id="name-modal-overlay" class="modal-hidden">
+        <div id="name-modal-content">
+            <h3>Ganti Nama</h3>
+            <p>Masukkan nama panggilan barumu agar Furina bisa mengenalmu.</p>
+            <input type="text" id="name-input-modal" placeholder="Nama baru..." maxlength="12">
+            <div class="modal-buttons">
+                <button id="cancel-name-btn">Batal</button>
+                <button id="save-name-btn-modal">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chat-container">
+        <div id="afk-progress-bar"></div>
+
+        <div id="chat-header">
+            <div class="header-left">
+                <div id="chat-status">MODE: AI FURINA</div>
+                <div id="visitor-count">    
+                    <span class="dot"></span>
+                    <span id="online-text">Menghitung...</span>
+                </div>
+            </div>
+            
+            <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
+                <div id="user-profile-info" style="text-align: right; line-height: 1.2;">
+                    <div id="display-name" style="font-size: 11px; font-weight: 800; color: #1f2937;">Loading...</div>
+                    <div id="display-id" style="font-size: 9px; color: #6b7280; font-family: monospace;">ID: #0000</div>
+                </div>
+                
+                <button id="toggle-name-btn">Ganti Nama</button>
+                <span id="close-chat">&times;</span>
+            </div>
+        </div>
+
+        <div id="chat-messages"></div>
+
+        <div class="chat-actions-bar">
+            <button id="btn-create" class="action-btn">🏠 Create</button>
+            <button id="btn-join" class="action-btn">🔑 Join</button>
+            <button id="btn-leave" class="action-btn">🚪 Leave</button>
+            <button id="btn-delete" class="action-btn" style="color: #be123c; border-color: rgba(225,29,72,0.3);">🗑️ Delete</button>
+        </div>
+
+        <div id="chat-input-area">
+            <input type="text" id="user-input" placeholder="Ketik pesan..." autocomplete="off">
+            <button id="send-btn">Kirim</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://unpkg.com/@pixiv/three-vrm@0.6.7/lib/three-vrm.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
+    <script src="vrm_logic.js"></script>
+    <script src="chat_logic.js"></script>
+    <script src="bypassclk.js"></script>
+
+</body>
+</html>

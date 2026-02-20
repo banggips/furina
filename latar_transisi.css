@@ -1,0 +1,13 @@
+/* latar */
+body { 
+    margin: 0; 
+    background: radial-gradient(circle, #0f172a 0%, #020617 100%); 
+    overflow: hidden; 
+    touch-action: none; 
+}
+
+canvas {
+    display: block;
+    /* Transisi filter untuk efek blur yang halus */
+    transition: filter 0.3s ease;
+}
